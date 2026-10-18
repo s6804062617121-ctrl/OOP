@@ -1,0 +1,31 @@
+1.1
+ผลลัพธ์คือ A แล้วตามด้วย B เพราะเมธอด f() เป็น Dynamic Binding โดย JVM ดูชนิดของวัตถุจริงตอนรันโปรแกรม ไม่ได้ดูชนิดของตัวแปรอ้างอิง
+1.2
+ผลลัพธ์คือ 1,4 และ 4,4
+a.x เป็น Static Binding คือดูตามชนิดของตัวแปร (A) จึงได้ A.x = 1
+b.x เป็น Static Binding ตามชนิด B จึงได้ B.x
+a.inc(), b.inc(), a.get() และ b.get() เป็น Dynamic Binding ทั้งหมด จึงเรียกเมธอดของ B ซึ่งเพิ่มค่า B.x จาก 2 เป็น 3 เป็น 4
+1.3
+ต้นฉบับผิดที่ new (Apple)fruit เพราะ syntax ผิด การแคสต์ต้องเขียนเป็น (Apple) fruit ไม่ต้องมี new
+เมื่อแก้แล้วจะ compile ผ่าน แต่ตอนรันจะเกิด ClassCastException เพราะวัตถุจริงเป็น Fruit ซึ่งไม่ใช่ Apple (Superclass แคสต์ลงเป็น Subclass ไม่ได้ถ้าวัตถุจริงไม่ใช่ Subclass นั้น)
+
+
+2.1
+บรรทัดแรกพิมพ์ A's x is 0 ส่วนบรรทัดที่สองพิมพ์ java.lang.Object@xxxxxxxx (ค่า hash เปลี่ยนไปในแต่ละเครื่อง)
+2.2
+ผลลัพธ์คือ false เพราะ equals(A a) เป็นการ Overload ไม่ใช่ Override equals(Object) ตัวแปรชนิด Object จึงเรียก Object.equals ซึ่งเทียบ reference
+2.3
+ผลลัพธ์คือ true เพราะตัวแปรเป็นชนิด A และพารามิเตอร์เป็น A จึงเลือก equals(A) ที่เขียนไว้เอง และ x ของทั้งสองวัตถุเท่ากับ 0
+
+4.
+ได้ x.news is Animal's news
+ ((Tiger)x).news is Tiger's news
+ x.smile() is smile from Animal
+ ((Tiger)x).smile() is smile from Tiger
+ x.getNews() is Tiger's news
+ x.getMessage() is Animal's message
+
+เพราะ
+ตัวแปร (field) และเมธอด static ใช้ Static Binding คือดูตามชนิดของตัวแปรที่ประกาศ (ข้อ 1-4)
+เมธอด instance ที่ถูก Override ใช้ Dynamic Binding คือดูตามวัตถุจริง จึงได้ Tiger's news ในข้อ 5
+getMessage() ไม่ได้ถูก Override ใน Tiger จึงใช้ของ Animal ซึ่งอ่าน Animal.message (ข้อ 6)
