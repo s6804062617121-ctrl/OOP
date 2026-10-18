@@ -1,0 +1,26 @@
+2.1 
+
+บรรทัดที่ 
+1 ประกาศคลาส House ที่ implements 2 อินเตอร์เฟส คือ Cloneable (อนุญาตให้ทำสำเนาวัตถุได้) และ Comparable<House> (กำหนดวิธีเปรียบเทียบ House กัน)
+2-4 ตัวแปร instance แบบ private ได้แก่ รหัสบ้าน พื้นที่ และวันเวลาที่สร้าง
+5-9 constructor รับ id กับ area มาเก็บไว้ และกำหนด whenBuilt เป็นเวลาปัจจุบัน
+10-18 เมธอด getter ของ id, area และ whenBuilt
+21-28 override clone() โดยเรียก super.clone() ของ Object เพื่อสร้างสำเนาแบบ shallow copy ถ้าคลาสไม่ได้ implements Cloneable จะเกิด CloneNotSupportedException จึงต้องมี try-catch
+30-3implements compareTo เปรียบเทียบจากพื้นที่ ถ้าของตัวเองมากกว่าจะคืน 1 น้อยกว่าคืน -1 เท่ากันคืน 0
+
+2.2
+public class Main {
+    public static void main(String[] args) {
+        House house1 = new House(1, 1750.50);
+        House house2 = (House) house1.clone();
+
+        System.out.println(house1 == house2);
+        System.out.println(house1.getId() + " " + house2.getId());
+        System.out.println(house1.getArea() + " " + house2.getArea());
+        System.out.println(house1.getWhenBuilt() == house2.getWhenBuilt());
+        System.out.println(house1.compareTo(house2));
+    }
+}
+
+โค้ด 2 บรรทัดที่โจทย์ให้ไม่มีคำสั่งพิมพ์ จึงไม่มีผลลัพธ์ออกหน้าจอ
+โค้ดทดสอบด้านบนจะพิมพ์ false (คนละวัตถุ), 1 1, 1750.5 1750.5, true (วัตถุ Date ถูกใช้ร่วมกัน เพราะเป็น shallow copy) และ 0
