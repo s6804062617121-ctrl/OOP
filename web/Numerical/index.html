@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Numerical Method Calculator</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header><div class="wrap">
+<div class="eyebrow">โปรเจกต์นักศึกษา · เครื่องมือช่วยคำนวณ</div>
+<div class="brand-row"><img class="site-logo" src="assets/kmutnb-logo.png" alt="ตราสัญลักษณ์มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ"><div><h1>Numerical Method Calculator</h1><p class="subtitle">เว็บไซต์ช่วยคำนวณวิธีเชิงตัวเลข</p></div></div>
+<p>รวมวิธีเชิงตัวเลข 6 วิธีไว้ในหน้าเดียว กรอกข้อมูลแล้วทดลองคำนวณได้ทันที เหมาะสำหรับใช้ทบทวนบทเรียนและตรวจคำตอบเบื้องต้น</p>
+</div></header>
+<main class="wrap">
+<nav aria-label="เลือกวิธีคำนวณ">
+<button class="active" data-tab="root">01 · Bisection</button>
+<button data-tab="linear">02 · Gaussian</button>
+<button data-tab="interp">03 · Interpolation</button>
+<button data-tab="extra">04 · Extrapolation</button>
+<button data-tab="integral">05 · Integration</button>
+<button data-tab="diff">06 · Differentiation</button>
+</nav>
+<section class="layout">
+<div class="card">
+<div class="method active" id="root">
+<h2>1. รากของสมการ (Bisection)</h2>
+<p class="hint">หาค่า x ที่ทำให้ f(x) ใกล้เคียง 0 โดยต้องมี f(a) และ f(b) คนละเครื่องหมาย</p>
+<label for="rootFn">ฟังก์ชัน f(x)</label><input id="rootFn" value="x*x-4" placeholder="เช่น x*x-4">
+<label for="rootA">ค่าขอบเขต a</label><input id="rootA" type="number" value="0">
+<label for="rootB">ค่าขอบเขต b</label><input id="rootB" type="number" value="3">
+<label for="rootTol">ค่าความคลาดเคลื่อน</label><input id="rootTol" type="number" value="0.0001" step="any">
+<button class="primary" onclick="solveRoot()">คำนวณราก</button>
+</div>
+<div class="method" id="linear">
+<h2>2. สมการเชิงเส้น (Gaussian Elimination)</h2>
+<p class="hint">ใส่เมทริกซ์เสริม [A|b] หนึ่งแถวต่อหนึ่งสมการ เช่น 2,1,5</p>
+<label for="matrix">เมทริกซ์เสริม</label><textarea id="matrix" rows="5">2,1,5
+1,-1,1</textarea>
+<button class="primary" onclick="solveLinear()">คำนวณคำตอบ</button>
+</div>
+<div class="method" id="interp">
+<h2>3. Interpolation</h2>
+<p class="hint">ประมาณค่า y ภายในช่วงข้อมูลด้วย Lagrange interpolation</p>
+<label for="points">จุดข้อมูล (x,y) หนึ่งจุดต่อบรรทัด</label><textarea id="points" rows="5">1,2
+2,4
+3,8</textarea>
+<label for="target">ค่า x ที่ต้องการประมาณ</label><input id="target" type="number" value="1.5" step="any">
+<button class="primary" onclick="solveInterp(false)">ประมาณค่า</button>
+</div>
+<div class="method" id="extra">
+<h2>4. Extrapolation</h2>
+<p class="hint">ประมาณค่านอกช่วงข้อมูล โดยใช้พหุนาม Lagrange แบบเดียวกับ interpolation</p>
+<label for="points2">จุดข้อมูล (x,y) หนึ่งจุดต่อบรรทัด</label><textarea id="points2" rows="5">1,2
+2,4
+3,8</textarea>
+<label for="target2">ค่า x นอกช่วง</label><input id="target2" type="number" value="4" step="any">
+<button class="primary" onclick="solveInterp(true)">ประมาณค่านอกช่วง</button>
+</div>
+<div class="method" id="integral">
+<h2>5. Integration (Trapezoidal Rule)</h2>
+<p class="hint">ประมาณค่าปริพันธ์จำกัดเขตด้วยกฎคางหมู</p>
+<label for="intFn">ฟังก์ชัน f(x)</label><input id="intFn" value="x*x" placeholder="เช่น x*x">
+<label for="intA">ขอบเขต a</label><input id="intA" type="number" value="0">
+<label for="intB">ขอบเขต b</label><input id="intB" type="number" value="1">
+<label for="intN">จำนวนช่วง n</label><input id="intN" type="number" value="100" min="1">
+<button class="primary" onclick="solveIntegral()">คำนวณปริพันธ์</button>
+</div>
+<div class="method" id="diff">
+<h2>6. Differentiation</h2>
+<p class="hint">ประมาณอนุพันธ์ด้วยสูตรผลต่างกลาง (Central Difference)</p>
+<label for="diffFn">ฟังก์ชัน f(x)</label><input id="diffFn" value="x*x" placeholder="เช่น x*x">
+<label for="diffX">ตำแหน่ง x</label><input id="diffX" type="number" value="2" step="any">
+<label for="diffH">ค่า h</label><input id="diffH" type="number" value="0.001" step="any">
+<button class="primary" onclick="solveDiff()">คำนวณอนุพันธ์</button>
+</div>
+<div class="hint">รูปแบบฟังก์ชันที่รองรับ: x, ตัวเลข, + - * /, วงเล็บ และ Math functions เช่น sin(x), cos(x), exp(x), log(x), sqrt(x), x^2 (ใช้ x*x แทน)</div>
+</div>
+<div class="card">
+<h2>ผลการคำนวณ</h2>
+<div id="result" class="result" role="status">เลือกวิธีคำนวณทางซ้าย แล้วกดปุ่ม “คำนวณ”</div>
+<h3>หลักการของวิธีนี้</h3>
+<p id="explain">เลือกวิธีหนึ่งเพื่อดูคำอธิบายและผลลัพธ์ที่คำนวณได้</p>
+
+</div>
+</section>
+<section class="card" style="margin-top:20px">
+<h2>เกี่ยวกับเว็บไซต์นี้</h2>
+<p>เว็บไซต์นี้รวบรวมเครื่องมือคำนวณ Numerical Methods ได้แก่ Root of Equation, Linear Algebra Equation, Interpolation, Extrapolation, Integration และ Differentiation เพื่อช่วยในการเรียนรู้และทดลองคำนวณ</p>
+</section>
+</main>
+<footer>Numerical Method Calculator · จัดทำเพื่อประกอบการเรียน</footer>
+<script src="js/script.js"></script>
+</body></html>
